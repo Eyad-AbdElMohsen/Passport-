@@ -1,7 +1,8 @@
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
-import { GoogleUser, User } from '../models/user.model'; 
+import { User } from '../models/user.model'; 
 import ApiError from '../errors/api.error'; 
-import passport, { Profile } from 'passport';
+import { Profile } from 'passport';
+import passport from 'passport';
 
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
@@ -19,13 +20,22 @@ passport.use(
         },
         async (accessToken: string, refreshToken: string, profile: Profile, done) => {
             try {
-                let user = await User.findOne({ email: profile.emails![0].value, googleId: profile.id });
+                let user = await User.findOne({
+                    $or: [
+                        { email: profile.emails?.[0]?.value },
+                        { googleId: profile.id }
+                    ]
+                });
                 if (!user) {
                     user = await User.create({
                         googleId: profile.id,
                         name: profile.displayName,
-                        email: profile.emails![0].value
+                        email: profile.emails![0].value,
                     });
+                }else{
+                    user.googleId = profile.id
+                    user.email = profile.emails?.[0]?.value || 'no email'
+                    await user.save()
                 }
                 return done(null, user); 
             } catch (error) {

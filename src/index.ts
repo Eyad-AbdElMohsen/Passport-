@@ -7,7 +7,7 @@ import limiter from "./utils/rateLimit";
 import authRouter from "./routes/auth.route";
 import session from 'express-session';
 import ApiError from "./errors/api.error";
-import passport from "./config/googleStrategy";
+import passport from "./config/passport";
 
 
 

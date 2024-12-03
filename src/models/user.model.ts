@@ -13,22 +13,15 @@ else
 const userSchema: Schema = new mongoose.Schema({
     name: {type: String, required: true},
     email: {type: String, required: true},
-    googleId: {type: String, required: false}
+    googleId: {type: String, required: false},
+    githubId: {type: String, required: false},
 })
 
 export interface IUser extends Document { 
     name: string,
     email: string,
-    googleId?: string
-}
-
-export interface GoogleUser {
-    name: string,
-    email: string,
     googleId?: string,
-    emails: string[]
+    githubId?: string,
 }
-
-
 
 export const User: Model<IUser> = mongoose.model<IUser>('User', userSchema);
