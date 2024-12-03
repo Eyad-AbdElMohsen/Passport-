@@ -8,7 +8,7 @@ import authRouter from "./routes/auth.route";
 import session from 'express-session';
 import ApiError from "./errors/api.error";
 import passport from "./config/passport";
-
+import cookieParser from 'cookie-parser'
 
 
 const port = process.env.port || 8000
@@ -23,7 +23,7 @@ app.use(session({
     resave: false,
     saveUninitialized: false,
 }));
-
+app.use(cookieParser())
 
 app.use(passport.initialize());
 app.use(passport.session())

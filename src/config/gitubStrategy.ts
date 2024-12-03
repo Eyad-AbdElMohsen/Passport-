@@ -24,7 +24,6 @@ const configureGithubStrategy = new GitHubStrategy({
                     { githubId: profile.id }
                 ]
             });
-            console.log(user)
             if (!user) {
                 user = await User.create({
                     githubId: profile.id,

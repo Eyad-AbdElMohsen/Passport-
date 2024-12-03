@@ -17,11 +17,15 @@ const userSchema: Schema = new mongoose.Schema({
     githubId: {type: String, required: false},
 })
 
-export interface IUser extends Document { 
+export interface JwtPayload{
     name: string,
     email: string,
     googleId?: string,
     githubId?: string,
 }
+export interface IUser extends Document, JwtPayload { 
+}
+
+
 
 export const User: Model<IUser> = mongoose.model<IUser>('User', userSchema);
